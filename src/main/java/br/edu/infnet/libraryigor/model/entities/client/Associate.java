@@ -1,6 +1,4 @@
 package br.edu.infnet.libraryigor.model.entities.client;
-
-import br.edu.infnet.libraryigor.model.entities.Loan;
 import br.edu.infnet.libraryigor.model.entities.LoanRecord;
 import jakarta.persistence.Entity;
 
@@ -34,7 +32,7 @@ public class Associate extends Users {
 
     @Override
     public String toString() {
-        return  "Associate{" +
+        return  "ASSOCIATE{" +
                 "id: " + this.getId() +
                 ", name: "+ this.getName() +
                 ", email: " + this.getEmail() +

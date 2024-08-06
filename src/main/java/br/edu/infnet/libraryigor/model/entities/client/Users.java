@@ -22,7 +22,7 @@ public abstract class Users implements Serializable { // Classe abstrata para qu
     private String email;
     private boolean active;
 
-    @OneToMany
+    @OneToMany (mappedBy = "loanKey.users")
     private Set<LoanRecord> loans;
 
     @ManyToOne
@@ -69,7 +69,7 @@ public abstract class Users implements Serializable { // Classe abstrata para qu
 
     @Override
     public String toString() {
-        return "User{" +
+        return "USER{" +
                 "id: " + id +
                 ", name: " + name +
                 ", email: " + email +

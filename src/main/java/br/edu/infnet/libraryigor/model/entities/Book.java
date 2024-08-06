@@ -73,12 +73,14 @@ public class Book implements Serializable { // Serializable para trafegar em red
 
     @Override
     public String toString() {
-        return "Book{" +
-                "id: " + id +
-                ", title: " + title +
-                ", author: " + author +
-                ", yearPublication: " + yearPublication +
-                ", price: " + price +
+        return "BOOK{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", author='" + author + '\'' +
+                ", yearPublication=" + yearPublication +
+                ", price=" + price +
+                ", library=" + library +
+                ", loans=" + loans +
                 '}';
     }
 }

@@ -59,7 +59,7 @@ public class Library implements Serializable { // Serializable para trafegar em 
 
     @Override
     public String toString() {
-        return "Library{" +
+        return "LIBRARY{" +
                 "id: " + id +
                 ", name: " + name +
                 ", address: " + address +

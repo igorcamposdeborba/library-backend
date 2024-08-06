@@ -53,6 +53,7 @@ public class LibraryIgorApplication implements ApplicationRunner {
                     book.getLoans().add(loan);
                 }
             }
+
             System.out.println(new ObjectMapper().writeValueAsString(library.toString()));
 
         } catch (IOException e) {

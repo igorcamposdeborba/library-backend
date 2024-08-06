@@ -33,7 +33,7 @@ public class Student extends Users {
 
     @Override
     public String toString() {
-        return "Student{" +
+        return "STUDENT{" +
                 "id: " + this.getId() +
                 ", name: "+ this.getName() +
                 ", email: " + this.getEmail() +

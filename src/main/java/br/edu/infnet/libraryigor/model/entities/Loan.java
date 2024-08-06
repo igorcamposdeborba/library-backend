@@ -1,6 +1,10 @@
 package br.edu.infnet.libraryigor.model.entities;
 
 import br.edu.infnet.libraryigor.model.entities.client.Users;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import java.io.Serializable;
@@ -12,8 +16,11 @@ public class Loan implements Serializable { // Serializable para trafegar em red
     private static final long serialVersionUID = 1L; // versão para serializacao/deserializacao para dar match com o que está sendo trafegado
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false) // name na tabela do banco de dados. E não permite nulo
+//    @JoinColumn(name = "user_id", nullable = false) // name na tabela do banco de dados. E não permite nulo
     private Users users;
+    @Column(name = "user_id", nullable = false) // name na tabela do banco de dados. E não permite nulo
+    private Integer userId;
+
     @ManyToOne
     @JoinColumn(name = "book_id", nullable = false) // name na tabela do banco de dados. E não permite nulo
     private Book book;
@@ -22,8 +29,9 @@ public class Loan implements Serializable { // Serializable para trafegar em red
     private LocalDate effectiveFrom;
     private LocalDate effectiveTo;
 
-    public Loan(Users users, Book book, LocalDate effectiveFrom, LocalDate effectiveTo) {
-        this.users = users;
+    public Loan(Users user, Book book, LocalDate effectiveFrom, LocalDate effectiveTo) {
+        this.users = user;
+        this.userId = user.getId();
         this.book = book;
         this.effectiveFrom = effectiveFrom;
         this.effectiveTo = effectiveTo;
@@ -39,6 +47,9 @@ public class Loan implements Serializable { // Serializable para trafegar em red
     public Users getUser() {
         return users;
     }
+    public Integer getUserId() {
+        return userId;
+    }
     public Book getBook() {
         return book;
     }
@@ -48,8 +59,11 @@ public class Loan implements Serializable { // Serializable para trafegar em red
     public void setEffectiveTo(LocalDate effectiveTo) {
         this.effectiveTo = effectiveTo;
     }
-    public void setUser(Users users) {
-        this.users = users;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+    public void setUser(Users user) {
+        this.users = user;
     }
     public void setBook(Book book) {
         this.book = book;
@@ -69,9 +83,9 @@ public class Loan implements Serializable { // Serializable para trafegar em red
 
     @Override
     public String toString() {
-        return "Loan{" +
-                ", user: " + users +
-                ", book: " + book +
+        return "LOAN{" +
+                "user: " + users.getName() +
+                ", book: " + book.getTitle() +
                 ", effectiveFrom: " + effectiveFrom +
                 ", effectiveTo: " + effectiveTo +
                 '}';

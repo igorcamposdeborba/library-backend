@@ -3,7 +3,6 @@ package br.edu.infnet.libraryigor.model.entities;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import java.io.Serializable;
-
 @Entity
 public class LoanRecord implements Serializable { // Serializable para trafegar em rede por bytes
     private static final long serialVersionUID = 1L; // versão para serializacao/deserializacao para dar match com o que está sendo trafegado
@@ -23,7 +22,7 @@ public class LoanRecord implements Serializable { // Serializable para trafegar 
 
     @Override
     public String toString() {
-        return "LoanRecord{" +
+        return "LOAN_RECORD{" +
                 "loanKey: " + loanKey +
                 '}';
     }
