@@ -1,10 +1,12 @@
 package br.edu.infnet.libraryigor.model.entities.client;
 import br.edu.infnet.libraryigor.model.entities.LoanRecord;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
 import java.util.Set;
 
 @Entity
+@Table(name = "associate")
 public class Associate extends Users {
     private String department;
     private String specialty;

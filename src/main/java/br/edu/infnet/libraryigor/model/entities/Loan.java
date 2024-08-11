@@ -1,10 +1,6 @@
 package br.edu.infnet.libraryigor.model.entities;
 
 import br.edu.infnet.libraryigor.model.entities.client.Users;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import java.io.Serializable;
@@ -12,6 +8,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 @Embeddable // Chave composta
+@Table(name = "loan")
 public class Loan implements Serializable { // Serializable para trafegar em rede por bytes
     private static final long serialVersionUID = 1L; // versão para serializacao/deserializacao para dar match com o que está sendo trafegado
 

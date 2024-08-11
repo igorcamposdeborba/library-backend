@@ -2,10 +2,12 @@ package br.edu.infnet.libraryigor.model.entities.client;
 import br.edu.infnet.libraryigor.model.entities.Loan;
 import br.edu.infnet.libraryigor.model.entities.LoanRecord;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
 import java.util.Set;
 
 @Entity
+@Table(name = "student")
 public class Student extends Users {
     private Double pendingPenaltiesAmount;
     private String courseName;

@@ -1,5 +1,6 @@
 package br.edu.infnet.libraryigor.model.entities;
 
+import br.edu.infnet.libraryigor.model.entities.dto.BookDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
@@ -8,7 +9,7 @@ import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
-@Table(name = "tb_book")
+@Table(name = "book")
 public class Book implements Serializable { // Serializable para trafegar em rede por bytes
     private static final long serialVersionUID = 1L; // versão para serializacao/deserializacao para dar match com o que está sendo trafegado
 
@@ -37,6 +38,14 @@ public class Book implements Serializable { // Serializable para trafegar em red
         this.yearPublication = LocalDate.parse(yearPublication.replaceAll("^\"|\"$","").trim());
         this.price = price;
         this.loans = loans;
+    }
+    public Book(BookDTO bookDTO) { // converter DTO para entity
+        this.id = bookDTO.getId();
+        this.title = bookDTO.getTitle();
+        this.author = bookDTO.getAuthor();
+        this.yearPublication = LocalDate.parse(String.valueOf(bookDTO.getYearPublication()).replaceAll("^\"|\"$","").trim());
+        this.price = bookDTO.getPrice();
+        this.loans = bookDTO.getLoans();
     }
 
     public Integer getId() {

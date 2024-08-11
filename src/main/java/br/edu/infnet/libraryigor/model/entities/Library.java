@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.Set;
 
 @Entity
-@Table(name = "tb_libray")
+@Table(name = "libray")
 public class Library implements Serializable { // Serializable para trafegar em rede por bytes
     private static final long serialVersionUID = 1L; // versão para serializacao/deserializacao para dar match com o que está sendo trafegado
 

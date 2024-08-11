@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.Set;
 @Entity
+@Table(name = "users")
 @Inheritance(strategy = InheritanceType.JOINED) // Cada subclasse tem sua propria tabela no banco de dados
 public abstract class Users implements Serializable { // Classe abstrata para que ela não possa ser intanciada a agrega atributos em comum para as classes implementadoras
                                                      // Serializable para trafegar em rede por bytes
@@ -22,7 +23,7 @@ public abstract class Users implements Serializable { // Classe abstrata para qu
     private String email;
     private boolean active;
 
-    @OneToMany (mappedBy = "loanKey.users")
+    @OneToMany
     private Set<LoanRecord> loans;
 
     @ManyToOne
