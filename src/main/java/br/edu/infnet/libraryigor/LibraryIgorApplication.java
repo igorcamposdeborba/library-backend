@@ -11,6 +11,9 @@ import br.edu.infnet.libraryigor.model.repositories.BookRepository;
 import br.edu.infnet.libraryigor.model.repositories.LoanRepository;
 import br.edu.infnet.libraryigor.model.repositories.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -76,8 +79,21 @@ public class LibraryIgorApplication implements ApplicationRunner {
 //            loanRepository.saveAll(loans);
             System.out.println(new ObjectMapper().writeValueAsString(library.toString()));
 
+            Unirest.setTimeouts(0, 0);
+            HttpResponse<String> bookResponse = Unirest.get("http://localhost:8080/book").asString();
+            HttpResponse<String> userResponse = Unirest.get("http://localhost:8080/user").asString();
+            HttpResponse<String> bookInsertResponse = Unirest.post("http://localhost:8080/book/single")
+                    .header("Content-Type", "application/json")
+                    .body("{\r\n    \"title\": \"O Senhor dos Anéis\",\r\n    \"author\": \"J.R.R. Tolkien\",\r\n    \"yearPublication\": \"1954-07-29\",\r\n    \"price\": 29.99\r\n}").asString();
+
+            System.out.println("BOOK findAll: " + bookResponse.getBody() + ". status " + bookResponse.getStatus());
+            System.out.println("USER findAll: " + userResponse.getBody() + ". status " + userResponse.getStatus());
+            System.out.println("BOOK insert: " + bookInsertResponse.getStatus());
+
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (UnirestException e) {
+            throw new RuntimeException(e);
         }
     }
 
