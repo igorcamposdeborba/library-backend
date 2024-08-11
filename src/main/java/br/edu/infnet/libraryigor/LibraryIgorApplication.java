@@ -177,7 +177,7 @@ public class LibraryIgorApplication implements ApplicationRunner {
                 LoanRecord loanRecord = new LoanRecord(loan);
                 loans.add(loanRecord);
 
-                loanRepository.save(loanRecord);
+//                loanRepository.save(loanRecord);
             }
         }
     }
