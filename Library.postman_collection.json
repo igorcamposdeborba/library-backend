@@ -58,13 +58,13 @@
 			"response": []
 		},
 		{
-			"name": "ADOPTER: create Book",
+			"name": "BOOK: create single book",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"title\": \"O Senhor dos Anéis\",\r\n    \"author\": \"J.R.R. Tolkien\",\r\n    \"yearPublication\": \"1954-07-29\",\r\n    \"price\": 29.99\r\n}",
+					"raw": "{\r\n    \"title\": \"O Senhor dos Anéis\",\r\n    \"author\": \"J.R.R. Tolkien\",\r\n    \"yearPublication\": \"1954-07-29\",\r\n    \"price\": 4.00\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -79,6 +79,33 @@
 					"path": [
 						"book",
 						"single"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "BOOK: create all books",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    {\r\n        \"title\": \"O Senhor dos Anéis\",\r\n        \"author\": \"J.R.R. Tolkien\",\r\n        \"yearPublication\": \"1954-07-29\",\r\n        \"price\": 4.00\r\n    },\r\n    {\r\n        \"title\": \"Administração de Marketing\",\r\n        \"author\": \"Philip Kotler\",\r\n        \"yearPublication\": \"2008-06-25\",\r\n        \"price\": 4.00\r\n    }\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/book/all",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"book",
+						"all"
 					]
 				}
 			},

@@ -38,7 +38,7 @@ public class BookController {
         return ResponseEntity.created(uri).build(); // retornar status created 201 com uri do objeto criado
     }
 
-    @PostMapping("/books")
+    @PostMapping("/all")
     public ResponseEntity<BookDTO> insertAll(@Valid @RequestBody List<BookDTO> booksDTO){
         // Inserir pelo service no banco de dados
         List<BookDTO> newBooks = bookService.insertAll(booksDTO);
