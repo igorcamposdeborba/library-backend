@@ -1,4 +1,5 @@
 package br.edu.infnet.libraryigor.model.entities.client;
+import br.edu.infnet.libraryigor.model.entities.Loan;
 import br.edu.infnet.libraryigor.model.entities.LoanRecord;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -11,8 +12,8 @@ public class Associate extends Users {
     private String department;
     private String specialty;
 
-    public Associate(String id, String name, String email, boolean active, Set<LoanRecord> loans, String department, String specialty) {
-        super(id, name, email, active, loans);
+    public Associate(String id, String name, String email, boolean active, String department, String specialty) {
+        super(id, name, email, active);
         this.department = department;
         this.specialty = specialty;
     }

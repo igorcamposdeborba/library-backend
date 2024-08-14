@@ -21,8 +21,8 @@ public class LoanService {
     private LoanRepository loanRepository; // injetar instancia do repository para buscar do banco de dados via JPA
 
     public List<LoanDTO> findAll(){
-        List<LoanRecord> loanList = loanRepository.findAll(); // buscar no banco de dados
+        List<Loan> loanList = loanRepository.findAll(); // buscar no banco de dados
         // converter a lista de classe para DTO
-        return loanList.stream().filter(Objects::nonNull).map((LoanRecord loan) -> new LoanDTO(loan)).collect(Collectors.toList());
+        return loanList.stream().filter(Objects::nonNull).map((Loan loan) -> new LoanDTO(loan)).collect(Collectors.toList());
     }
 }

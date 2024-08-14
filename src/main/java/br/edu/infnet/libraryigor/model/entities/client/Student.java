@@ -12,8 +12,8 @@ public class Student extends Users {
     private Double pendingPenaltiesAmount;
     private String courseName;
 
-    public Student(String id, String name, String email, boolean active, Set<LoanRecord> loans, Double pendingPenaltiesAmount, String courseName) {
-        super(id, name, email, active, loans);
+    public Student(String id, String name, String email, boolean active, Double pendingPenaltiesAmount, String courseName) {
+        super(id, name, email, active);
         this.pendingPenaltiesAmount = pendingPenaltiesAmount;
         this.courseName = courseName;
     }

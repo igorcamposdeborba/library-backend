@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository // permite injeção de dependência para implementar os métodos de acesso ao banco de dados
-public interface LoanRepository extends JpaRepository<LoanRecord, Loan> { // classe e primaryKey
+public interface LoanRepository extends JpaRepository<Loan, LoanRecord> { // classe e primaryKey
 }

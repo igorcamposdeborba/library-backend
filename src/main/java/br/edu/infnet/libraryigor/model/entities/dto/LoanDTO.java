@@ -11,14 +11,14 @@ import java.util.Set;
 public class LoanDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private LoanRecord loanKey;
+    private Loan loan;
 
-    public LoanDTO(LoanRecord loan) {
-        this.loanKey = loan;
+    public LoanDTO(Loan loan) {
+        this.loan = loan;
     }
 
-    public LoanRecord getLoanKey() {
-        return loanKey;
+    public Loan getLoanKey() {
+        return loan;
     }
 
 }

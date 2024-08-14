@@ -1,6 +1,7 @@
 package br.edu.infnet.libraryigor.model.entities.client;
 
 import br.edu.infnet.libraryigor.model.entities.Library;
+import br.edu.infnet.libraryigor.model.entities.Loan;
 import br.edu.infnet.libraryigor.model.entities.LoanRecord;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -23,19 +24,15 @@ public abstract class Users implements Serializable { // Classe abstrata para qu
     private String email;
     private boolean active;
 
-    @OneToMany
-    private Set<LoanRecord> loans;
-
     @ManyToOne
     @JoinColumn(name = "library_id")
     private Library library;
 
-    public Users(String id, String name, String email, boolean active, Set<LoanRecord> loans) {
+    public Users(String id, String name, String email, boolean active) {
         this.id = Integer.parseInt(id);
         this.name = name;
         this.email = email;
         this.active = active;
-        this.loans = loans;
     }
 
     public Users() {} // JPA precisa de construtor vazio público para persistir no banco de dados
@@ -52,9 +49,6 @@ public abstract class Users implements Serializable { // Classe abstrata para qu
     public boolean isActive() {
         return active;
     }
-    public Set<LoanRecord> getLoans() {
-        return loans;
-    }
     public void setName(String name) {
         this.name = name;
     }
@@ -64,9 +58,6 @@ public abstract class Users implements Serializable { // Classe abstrata para qu
     public void setActive(boolean active) {
         this.active = active;
     }
-    public void addBooksLoan(LoanRecord bookLoan) {
-        this.loans.add(bookLoan);
-    }
 
     @Override
     public String toString() {
@@ -75,7 +66,6 @@ public abstract class Users implements Serializable { // Classe abstrata para qu
                 ", name: " + name +
                 ", email: " + email +
                 ", active: " + active +
-                ", loans: " + loans +
                 '}';
     }
 }

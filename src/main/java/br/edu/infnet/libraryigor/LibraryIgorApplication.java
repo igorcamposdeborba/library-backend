@@ -24,6 +24,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @SpringBootApplication
 public class LibraryIgorApplication implements ApplicationRunner {
@@ -40,7 +41,8 @@ public class LibraryIgorApplication implements ApplicationRunner {
 
     private Map<Integer, Book> bookMap = new HashMap<>();
     private Map<Integer, Users> userMap = new HashMap<>();
-    private Set<LoanRecord> loans = new HashSet<>();
+    private Set<LoanRecord> loansKey = new HashSet<>();
+    Set<Loan> loans = new HashSet<>();
     private Library library;
 
     @Override
@@ -54,29 +56,33 @@ public class LibraryIgorApplication implements ApplicationRunner {
             // Atualizar a biblioteca com todos os livros e usuários
             library = new Library(0, new HashSet<>(bookMap.values()), new HashSet<>(userMap.values()));
 
+
             // Associar empréstimos aos usuários e livros
-            for (LoanRecord loan : loans) {
+            for (LoanRecord loan : loansKey) {
 //                Users user = loan.getLoanKey().getUser();
 //                Book book = loan.getLoanKey().getBook();
-                Users user = loan.getLoanKey().getUser();
-                Book book = loan.getLoanKey().getBook();
-//                Users user = loan.getUser();
-//                Book book = loan.getUser().getLoans().stream().map(item -> item.getBook()).findFirst().orElse(null); // todo: revisar essa linha
+                Integer userId = loan.getUserId();
+                Integer bookId = loan.getBookId();
 
-                if (user != null && book != null) {
-                    user.addBooksLoan(loan);
-                    book.getLoans().add(loan);
+                if (userId != null && bookId != null) {
+                    Users user = userMap.values().stream().filter(userActual -> userActual.getId().equals(userId)).findFirst().get();
+                    Book book = bookMap.values().stream().filter(bookActual -> bookActual.getId().equals(bookId)).findFirst().get();
+//                    user.addBooksLoan(new Loan(user, book, LocalDate.now(), LocalDate.now().plusDays(7)));
+                    // !todo: pegar id do loan do banco de dados. Criar findById
+//                    loans = user.getLoans().stream().filter(actualLoan -> actualLoan.getBook().getId().equals(bookId)
+//                                                                                 && actualLoan.getUser().getId().equals(userId))
+//                                                              .collect(Collectors.toSet());
+//                    loanRepository.saveAll(loans);
 //                    userRepository.save(user);
-//                    loanRepository.save(loan);
-
+//                    loanRepository.saveAll(loans);
 //                    bookRepository.save(book); // salvar no banco de dados ao iniciar a aplicacao
 //                    loanRepository.save(loan);
 //                    userRepository.save(user);
                 }
             }
-//            bookRepository.saveAll(bookMap.values());
-//            userRepository.saveAll(userMap.values());
-//            loanRepository.saveAll(loans);
+            loanRepository.saveAll(loans);
+            bookRepository.saveAll(bookMap.values());
+            userRepository.saveAll(userMap.values());
             System.out.println(new ObjectMapper().writeValueAsString(library.toString()));
 
             Unirest.setTimeouts(0, 0);
@@ -85,10 +91,13 @@ public class LibraryIgorApplication implements ApplicationRunner {
             HttpResponse<String> bookInsertResponse = Unirest.post("http://localhost:8080/book/single")
                     .header("Content-Type", "application/json")
                     .body("{\r\n    \"title\": \"O Senhor dos Anéis\",\r\n    \"author\": \"J.R.R. Tolkien\",\r\n    \"yearPublication\": \"1954-07-29\",\r\n    \"price\": 29.99\r\n}").asString();
+            HttpResponse<String> loanResponse = Unirest.get("http://localhost:8080/loan").asString();
 
             System.out.println("BOOK findAll: " + bookResponse.getBody() + ". status " + bookResponse.getStatus());
             System.out.println("USER findAll: " + userResponse.getBody() + ". status " + userResponse.getStatus());
             System.out.println("BOOK insert: " + bookInsertResponse.getStatus());
+            System.out.println("LOAN findAll: " + loanResponse.getBody() + ". status " + loanResponse.getStatus());
+
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -115,8 +124,7 @@ public class LibraryIgorApplication implements ApplicationRunner {
                             title,
                             author,
                             yearPublicationStr,
-                            price,
-                            new HashSet<>()
+                            price
                     );
                     bookMap.put(id, book);
             }
@@ -137,7 +145,6 @@ public class LibraryIgorApplication implements ApplicationRunner {
                             fields[1], // name
                             fields[2], // email
                             Boolean.parseBoolean(fields[3]), // active
-                            new HashSet<>(),
                             fields[5], // department
                             fields[6]  // specialty
                     );
@@ -159,7 +166,6 @@ public class LibraryIgorApplication implements ApplicationRunner {
                             fields[1], // name
                             fields[2], // email
                             Boolean.parseBoolean(fields[3]), // active
-                            new HashSet<>(),
                             Double.parseDouble(fields[5]), // pendingPenaltiesAmount
                             fields[6]  // courseName
                     );
@@ -181,6 +187,11 @@ public class LibraryIgorApplication implements ApplicationRunner {
                 Users user = userMap.get(userId);
                 Book book = bookMap.get(bookId);
 
+                if (user == null || book == null) {
+                    // Log an error or handle the case where user or book is not found
+                    continue;
+                }
+
                 LocalDate effectiveFrom = LocalDate.parse(fields[2]);
                 LocalDate effectiveTo = LocalDate.parse(fields[3]);
 
@@ -190,10 +201,10 @@ public class LibraryIgorApplication implements ApplicationRunner {
                         effectiveFrom,
                         effectiveTo
                 );
-                LoanRecord loanRecord = new LoanRecord(loan);
-                loans.add(loanRecord);
+                LoanRecord loanRecord = new LoanRecord(book, user);
+                loansKey.add(loanRecord);
 
-//                loanRepository.save(loanRecord);
+                loanRepository.save(loan);
             }
         }
     }

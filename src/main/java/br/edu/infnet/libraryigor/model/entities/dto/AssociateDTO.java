@@ -1,6 +1,7 @@
 package br.edu.infnet.libraryigor.model.entities.dto;
 
 
+import br.edu.infnet.libraryigor.model.entities.Loan;
 import br.edu.infnet.libraryigor.model.entities.LoanRecord;
 
 import java.io.Serializable;
@@ -12,7 +13,7 @@ public class AssociateDTO extends UsersDTO implements Serializable {
     private String department;
     private String specialty;
 
-    public AssociateDTO(String id, String name, String email, boolean active, Set<LoanRecord> loans, String department, String specialty) {
+    public AssociateDTO(String id, String name, String email, boolean active, Set<Loan> loans, String department, String specialty) {
         super(id, name, email, active, loans);
         this.department = department;
         this.specialty = specialty;

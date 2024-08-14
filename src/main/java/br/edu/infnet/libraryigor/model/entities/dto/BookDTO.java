@@ -3,6 +3,7 @@ package br.edu.infnet.libraryigor.model.entities.dto;
 
 import br.edu.infnet.libraryigor.model.entities.Book;
 import br.edu.infnet.libraryigor.model.entities.Library;
+import br.edu.infnet.libraryigor.model.entities.Loan;
 import br.edu.infnet.libraryigor.model.entities.LoanRecord;
 import br.edu.infnet.libraryigor.model.entities.client.Users;
 import jakarta.persistence.JoinColumn;
@@ -23,27 +24,20 @@ public class BookDTO implements Serializable {
     private LocalDate yearPublication;
     private double price;
 
-    private Library library;
-
-    @OneToMany
-    private Set<LoanRecord> loans;
-
-
     public BookDTO(Book book) {
         this.id = book.getId();
         this.title = book.getTitle();
         this.author = book.getAuthor();
         this.yearPublication = LocalDate.parse(String.valueOf(book.getYearPublication()).replaceAll("^\"|\"$","").trim());
         this.price = book.getPrice();
-        this.loans = book.getLoans();
     }
-    public BookDTO(Integer id, String title, String author, String yearPublication, double price, Set<LoanRecord> loans) {
+    public BookDTO(Integer id, String title, String author, String yearPublication, double price, Loan loan) {
         this.id = id;
         this.title = title;
         this.author = author;
         this.yearPublication = LocalDate.parse(yearPublication.replaceAll("^\"|\"$","").trim());
         this.price = price;
-        this.loans = loans;
+//        this.loan = loan;
     }
 
     public Integer getId() {
@@ -72,10 +66,6 @@ public class BookDTO implements Serializable {
     }
     public void setPrice(double price) {
         this.price = price;
-    }
-
-    public Set<LoanRecord> getLoans() {
-        return loans;
     }
 
 }

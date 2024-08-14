@@ -27,17 +27,13 @@ public class Book implements Serializable { // Serializable para trafegar em red
     @JoinColumn(name = "library_id")
     private Library library;
 
-    @OneToMany
-    private Set<LoanRecord> loans;
-
     public Book(){}  // JPA precisa de construtor vazio público para persistir no banco de dados
-    public Book(Integer id, String title, String author, String yearPublication, double price, Set<LoanRecord> loans) {
+    public Book(Integer id, String title, String author, String yearPublication, double price) {
         this.id = id;
         this.title = title;
         this.author = author;
         this.yearPublication = LocalDate.parse(yearPublication.replaceAll("^\"|\"$","").trim());
         this.price = price;
-        this.loans = loans;
     }
     public Book(BookDTO bookDTO) { // converter DTO para entity
         this.id = bookDTO.getId();
@@ -45,7 +41,6 @@ public class Book implements Serializable { // Serializable para trafegar em red
         this.author = bookDTO.getAuthor();
         this.yearPublication = LocalDate.parse(String.valueOf(bookDTO.getYearPublication()).replaceAll("^\"|\"$","").trim());
         this.price = bookDTO.getPrice();
-        this.loans = bookDTO.getLoans();
     }
 
     public Integer getId() {
@@ -76,10 +71,6 @@ public class Book implements Serializable { // Serializable para trafegar em red
         this.price = price;
     }
 
-    public Set<LoanRecord> getLoans() {
-        return loans;
-    }
-
     @Override
     public String toString() {
         return "BOOK{" +
@@ -89,7 +80,6 @@ public class Book implements Serializable { // Serializable para trafegar em red
                 ", yearPublication=" + yearPublication +
                 ", price=" + price +
                 ", library=" + library +
-                ", loans=" + loans +
                 '}';
     }
 }
