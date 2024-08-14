@@ -58,6 +58,23 @@
 			"response": []
 		},
 		{
+			"name": "BOOK: findById",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/catalog",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"catalog"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "BOOK: create single book",
 			"request": {
 				"method": "POST",
