@@ -64,14 +64,7 @@ public class BookService {
     }
 
     @Transactional
-    public void deleteById(Integer id, BookDTO bookDTO) {
-
-        // Validar com exception se id não for encontrado
-        BookDTO userEntity = findById(id);
-
-        if ( !Objects.equals(userEntity.getId(), bookDTO.getId())) {
-            throw new IllegalArgumentException(Constants.DIFFERENTS_IDS);
-        }
+    public void deleteById(Integer id) {
 
         // Deletar no banco de dados
         bookRepository.deleteById(id);

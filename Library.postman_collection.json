@@ -75,6 +75,24 @@
 			"response": []
 		},
 		{
+			"name": "BOOK: deleteById",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/book/5",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"book",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "BOOK: create single book",
 			"request": {
 				"method": "POST",

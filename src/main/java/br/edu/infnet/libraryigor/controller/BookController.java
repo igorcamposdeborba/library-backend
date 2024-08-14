@@ -60,8 +60,8 @@ public class BookController {
     }
 
     @DeleteMapping (value = ID) // id no path da url
-    public ResponseEntity<Void> delete(@Valid @PathVariable Integer id, @RequestBody BookDTO bookDTO){
-        bookService.deleteById(id, bookDTO);
+    public ResponseEntity<Void> delete(@Valid @PathVariable Integer id){
+        bookService.deleteById(id);
 
         return ResponseEntity.noContent().build(); // retornar status created 201 com uri do objeto criado
     }
