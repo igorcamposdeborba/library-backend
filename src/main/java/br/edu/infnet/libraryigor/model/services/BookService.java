@@ -1,5 +1,6 @@
 package br.edu.infnet.libraryigor.model.services;
 
+import br.edu.infnet.libraryigor.Constants;
 import br.edu.infnet.libraryigor.model.entities.Book;
 import br.edu.infnet.libraryigor.model.entities.client.Users;
 import br.edu.infnet.libraryigor.model.entities.dto.BookDTO;
@@ -7,12 +8,14 @@ import br.edu.infnet.libraryigor.model.entities.dto.UsersDTO;
 import br.edu.infnet.libraryigor.model.repositories.BookRepository;
 import br.edu.infnet.libraryigor.model.repositories.UserRepository;
 import jakarta.transaction.Transactional;
+import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,6 +27,17 @@ public class BookService {
         List<Book> bookList = bookRepository.findAll(Sort.by("title")); // buscar no banco de dados e ordenar por nome
         // converter a lista de classe para DTO
         return bookList.stream().filter(Objects::nonNull).map((Book book) -> new BookDTO(book)).collect(Collectors.toList());
+    }
+
+    @Transactional() // Transação sempre executa esta operação no banco de dados se for 100% de sucesso.
+    public BookDTO findById(Integer id) {
+        // Buscar no banco de dados
+        Optional<Book> bookDTO = bookRepository.findById(id);
+
+        // Exception de validação
+        Book entity = bookDTO.orElseThrow(() -> new ObjectNotFoundException(Constants.NOT_FOUND_BOOK, id));
+
+        return new BookDTO(entity); // retornar somente dados permitidos (mapeados) pelo DTO
     }
 
     @Transactional
@@ -47,5 +61,19 @@ public class BookService {
                                             .map(entity -> new BookDTO(entity))
                                             .collect(Collectors.toList());
         return savedDTOs; // retornar o que foi salvo no banco de dados
+    }
+
+    @Transactional
+    public void deleteById(Integer id, BookDTO bookDTO) {
+
+        // Validar com exception se id não for encontrado
+        BookDTO userEntity = findById(id);
+
+        if ( !Objects.equals(userEntity.getId(), bookDTO.getId())) {
+            throw new IllegalArgumentException(Constants.DIFFERENTS_IDS);
+        }
+
+        // Deletar no banco de dados
+        bookRepository.deleteById(id);
     }
 }

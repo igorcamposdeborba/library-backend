@@ -90,7 +90,7 @@ public class LibraryIgorApplication implements ApplicationRunner {
             HttpResponse<String> userResponse = Unirest.get("http://localhost:8080/user").asString();
             HttpResponse<String> bookInsertResponse = Unirest.post("http://localhost:8080/book/single")
                     .header("Content-Type", "application/json")
-                    .body("{\r\n    \"title\": \"O Senhor dos Anéis\",\r\n    \"author\": \"J.R.R. Tolkien\",\r\n    \"yearPublication\": \"1954-07-29\",\r\n    \"price\": 29.99\r\n}").asString();
+                    .body("{\r\n    \"title\": \"O Senhor dos Anéis\",\r\n    \"author\": \"J.R.R. Tolkien\",\r\n    \"yearPublication\": \"1954-07-29\",\r\n    \"price\": 4.00\r\n}").asString();
             HttpResponse<String> loanResponse = Unirest.get("http://localhost:8080/loan").asString();
 
             System.out.println("BOOK findAll: " + bookResponse.getBody() + ". status " + bookResponse.getStatus());

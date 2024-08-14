@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping(value = "/book") // rota
 public class BookController {
+    private static final String ID = "/{id}";
     @Autowired
     private BookService bookService;
 
@@ -26,6 +27,13 @@ public class BookController {
         List<BookDTO> bookList = bookService.findAll();
 
         return ResponseEntity.ok().body(bookList);
+    }
+
+    @GetMapping(value = ID)
+    public ResponseEntity<BookDTO> findById(@PathVariable Integer id){
+        BookDTO userDTO = bookService.findById(id);
+
+        return ResponseEntity.ok().body(userDTO);
     }
 
     @PostMapping("/single")
@@ -49,5 +57,12 @@ public class BookController {
                                     .collect(Collectors.toList());
 
         return ResponseEntity.created(uris.get(0)).build(); // retornar status created 201 com uri do objeto criado
+    }
+
+    @DeleteMapping (value = ID) // id no path da url
+    public ResponseEntity<Void> delete(@Valid @PathVariable Integer id, @RequestBody BookDTO bookDTO){
+        bookService.deleteById(id, bookDTO);
+
+        return ResponseEntity.noContent().build(); // retornar status created 201 com uri do objeto criado
     }
 }
