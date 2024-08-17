@@ -8,12 +8,14 @@ import br.edu.infnet.libraryigor.model.entities.client.Associate;
 import br.edu.infnet.libraryigor.model.entities.client.Student;
 import br.edu.infnet.libraryigor.model.entities.client.Users;
 import br.edu.infnet.libraryigor.model.repositories.BookRepository;
+import br.edu.infnet.libraryigor.model.repositories.LibraryRepository;
 import br.edu.infnet.libraryigor.model.repositories.LoanRepository;
 import br.edu.infnet.libraryigor.model.repositories.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Bean;
@@ -27,6 +29,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Configuration
 @Profile("test")
@@ -37,21 +40,24 @@ public class LocalConfig {
     BookRepository bookRepository;
     @Autowired
     LoanRepository loanRepository;
+    @Autowired
+    LibraryRepository libraryRepository;
 
     private Map<Integer, Book> bookMap = new HashMap<>();
     private Map<Integer, Users> userMap = new HashMap<>();
     private Set<LoanRecord> loansKey = new HashSet<>();
     Set<Loan> loans = new HashSet<>();
-    private Library library;
-
+    Library library = new Library();
 
     @Bean // Spring gerencia metodo para ser instanciado/injetado (@Autowired) em qualquer classe
     @Order(0) // ordem de inicializacao (para garantir que mesmo que criem outros métodos futuramente, os dados do database seja inserido antes)
+    @Transactional
     public Optional<?> startDB() {
 
         List<Loan> savedLoans = Collections.emptyList();
-        List<Book> savedbooks = Collections.emptyList();
+        List<Book> savedBooks = Collections.emptyList();
         List<Users> savedUsers = Collections.emptyList();
+
 
         try {
             // Instanciar classes
@@ -61,19 +67,56 @@ public class LocalConfig {
             readLoans();
 
             // Atualizar a biblioteca com todos os livros e usuários
-            library = new Library(0, new HashSet<>(bookMap.values()), new HashSet<>(userMap.values()));
+//            library = new Library(bookMap, userMap);
 
             // Inserir no database
-            savedLoans = loanRepository.saveAll(loans);
-            savedbooks = bookRepository.saveAll(bookMap.values());
-            savedUsers = userRepository.saveAll(userMap.values());
+            List<Book> booksToSave = bookMap.values().stream()
+                    .map(book -> bookRepository.findById(book.getId()).orElse(book))
+                    .collect(Collectors.toList());
+//            savedBooks = bookRepository.saveAll(booksToSave);
+
+            List<Users> usersToSave = userMap.values().stream()
+                    .map(user -> userRepository.findById(user.getId()).orElse(user))
+                    .collect(Collectors.toList());
+//            savedUsers = userRepository.saveAll(usersToSave);
+
+            // atualizar biblioteca
+            library = new Library(booksToSave, usersToSave);
+            library.addBooks(savedBooks);
+            library.addUsers(savedUsers);
+//            library.setUsers(savedUsers);
+//            libraryRepository.save(library);
+
+            // atualizar livros para associar a biblioteca
+            libraryRepository.save(library);
+
+            // Associar os livros à biblioteca
+            for (Book book : booksToSave) {
+                book.setLibrary(library);
+            }
+            // Associar os users à biblioteca
+            for (Users user : usersToSave) {
+                user.setLibrary(library);
+            }
+
+            bookRepository.saveAll(booksToSave);
+
+            // atualizar livros da biblioteca
+//            savedBooks = bookRepository.saveAll(booksToSave);
+
+
+//            savedLoans = loanRepository.saveAll(loans);
+//            savedbooks = bookRepository.saveAll(bookMap.values().stream().map(book -> bookRepository.findById(book.getId()).orElse(book)).collect(Collectors.toList()));
+//            savedUsers = userRepository.saveAll(userMap.values().stream().map(user -> userRepository.findById(user.getId()).orElse(user)).collect(Collectors.toList()));
+//            libraryRepository.save(library);
+
             System.out.println(new ObjectMapper().writeValueAsString(library.toString()));
 
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return Optional.of(savedbooks);
+        return Optional.of(library);
     }
     @EventListener(ApplicationReadyEvent.class) // disparar evento apos aplicacao estiver totalemente iniciada
     public void printDB() {
@@ -84,7 +127,7 @@ public class LocalConfig {
             HttpResponse<String> userResponse = Unirest.get("http://localhost:8080/user").asString();
             HttpResponse<String> bookInsertResponse = Unirest.post("http://localhost:8080/book/single")
                     .header("Content-Type", "application/json")
-                    .body("{\r\n    \"title\": \"O Senhor dos Anéis\",\r\n    \"author\": \"J.R.R. Tolkien\",\r\n    \"yearPublication\": \"1954-07-29\",\r\n    \"price\": 4.00\r\n}").asString();
+                    .body("{\r\n    \"title\": \"O Senhor dos Anéis\",\r\n    \"author\": \"J.R.R. Tolkien\",\r\n    \"yearPublication\": \"1954-07-29\",\r\n    \"price\": 4.00,\r\n    \"libraryId\": 1\r\n}").asString();
             HttpResponse<String> loanResponse = Unirest.get("http://localhost:8080/loan").asString();
 
             System.out.println("BOOK findAll: " + bookResponse.getBody() + ". status " + bookResponse.getStatus());
@@ -96,7 +139,8 @@ public class LocalConfig {
             e.printStackTrace();
         }
     }
-    private void readBooks() throws IOException {
+    @Transactional
+    public void readBooks() throws IOException {
         String filePath = "src/main/resources/init/book.csv";
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
@@ -122,7 +166,8 @@ public class LocalConfig {
         }
     }
 
-    private void readAssociate() throws IOException {
+    @Transactional
+    public void readAssociate() throws IOException {
         String filePath = "src/main/resources/init/associate.csv";
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
@@ -143,7 +188,8 @@ public class LocalConfig {
         }
     }
 
-    private void readStudent() throws IOException {
+    @Transactional
+    public void readStudent() throws IOException {
         String filePath = "src/main/resources/init/student.csv";
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
@@ -164,7 +210,9 @@ public class LocalConfig {
             userRepository.saveAll(userMap.values());
         }
     }
-    private void readLoans() throws IOException {
+
+    @Transactional
+    public void readLoans() throws IOException {
         String filePath = "src/main/resources/init/loan.csv";
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
@@ -197,5 +245,9 @@ public class LocalConfig {
                 loanRepository.save(loan);
             }
         }
+
+    }
+    public Map<Integer, Book> getBookMap() {
+        return bookMap;
     }
 }

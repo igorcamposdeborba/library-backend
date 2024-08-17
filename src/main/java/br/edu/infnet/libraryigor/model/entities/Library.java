@@ -6,10 +6,9 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
 import java.io.Serializable;
-import java.util.Set;
+import java.util.*;
 
 @Entity
-@Table(name = "libray")
 public class Library implements Serializable { // Serializable para trafegar em rede por bytes
     private static final long serialVersionUID = 1L; // versão para serializacao/deserializacao para dar match com o que está sendo trafegado
 
@@ -17,20 +16,26 @@ public class Library implements Serializable { // Serializable para trafegar em 
     @GeneratedValue(strategy = GenerationType.IDENTITY) // JPA: Banco de dados gera id sequencial
     private Integer id;
     @NotBlank // nao permite vazio ou null
-    private static String name;
-    private static String address;
+    private String name;
+    private String address;
 
     @OneToMany(mappedBy = "library", cascade = CascadeType.ALL) // cacade: aplicar tambem para as classes filhas
-    private Set<Book> books;                                    // mappedBy: quem gerencia a chave estrangeira é Library
+    private List<Book> books;                           // mappedBy: quem gerencia a chave estrangeira é Library
 
     @OneToMany(mappedBy = "library", cascade = CascadeType.ALL) // cacade: aplicar tambem para as classes filhas
-    private Set<Users> users;                                    // mappedBy: quem gerencia a chave estrangeira é Library
+    private List<Users> users;                          // mappedBy: quem gerencia a chave estrangeira é Library
 
 
-    public Library(){} // JPA precisa de construtor vazio público para persistir no banco de dados
 
-    public Library(Integer id, Set<Book> books, Set<Users> users) {
-        this.id = id;
+    public Library() { // JPA precisa de construtor vazio público para persistir no banco de dados
+        this.name = Constants.NAME;
+        this.address = Constants.ADDRESS;
+    }
+    public Library(Map<Integer, Book> books, Map<Integer, Users> users) {
+        this.name = Constants.NAME;
+        this.address = Constants.ADDRESS;
+    }
+    public Library(List<Book> books, List<Users> users) {
         this.name = Constants.NAME;
         this.address = Constants.ADDRESS;
         this.books = books;
@@ -40,21 +45,22 @@ public class Library implements Serializable { // Serializable para trafegar em 
         return id;
     }
 
-    public Set<Book> getBooks() {
+    public List<Book> getBooks() {
         return books;
     }
-    public Set<Users> getUsers() {
+    public List<Users> getUsers() {
         return users;
     }
-    public void addBooks(Set<Book> booksInput) {
-        booksInput.forEach(book -> this.books.add(book));
+
+    public void addBooks(List<Book> booksInput) {
+        this.books.addAll(booksInput);
     }
-    public void setUsers(Set<Users> users) {
-        this.users = users;
+    public void addUsers(List<Users> users) {
+        this.users.addAll(users);
     }
 
-    public void setBooks(Set<Book> books) {
-        this.books = books;
+    public void setBook(Book book) {
+        this.books.add(book);
     }
 
     @Override
@@ -64,7 +70,6 @@ public class Library implements Serializable { // Serializable para trafegar em 
                 ", name: " + name +
                 ", address: " + address +
                 ", books: " + books +
-                ", users: " + users +
                 ", users: " + users +
                 '}';
     }

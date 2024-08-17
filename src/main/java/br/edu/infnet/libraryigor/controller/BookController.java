@@ -1,6 +1,7 @@
 package br.edu.infnet.libraryigor.controller;
 
 import br.edu.infnet.libraryigor.model.entities.dto.BookDTO;
+import br.edu.infnet.libraryigor.model.entities.dto.LibraryDTO;
 import br.edu.infnet.libraryigor.model.entities.dto.UsersDTO;
 import br.edu.infnet.libraryigor.model.services.BookService;
 import br.edu.infnet.libraryigor.model.services.UsersService;

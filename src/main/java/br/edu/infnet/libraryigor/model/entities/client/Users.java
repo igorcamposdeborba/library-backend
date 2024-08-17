@@ -59,6 +59,10 @@ public abstract class Users implements Serializable { // Classe abstrata para qu
         this.active = active;
     }
 
+    public void setLibrary(Library library) {
+        this.library = library;
+    }
+
     @Override
     public String toString() {
         return "USER{" +

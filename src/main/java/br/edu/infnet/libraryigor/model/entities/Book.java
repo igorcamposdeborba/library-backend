@@ -1,11 +1,13 @@
 package br.edu.infnet.libraryigor.model.entities;
 
 import br.edu.infnet.libraryigor.model.entities.dto.BookDTO;
+import br.edu.infnet.libraryigor.model.entities.dto.LibraryDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -71,6 +73,13 @@ public class Book implements Serializable { // Serializable para trafegar em red
         this.price = price;
     }
 
+    public Library getLibrary() {
+        return library;
+    }
+    public void setLibrary(Library library) {
+        this.library = library;
+    }
+
     @Override
     public String toString() {
         return "BOOK{" +
@@ -79,7 +88,6 @@ public class Book implements Serializable { // Serializable para trafegar em red
                 ", author='" + author + '\'' +
                 ", yearPublication=" + yearPublication +
                 ", price=" + price +
-                ", library=" + library +
                 '}';
     }
 }

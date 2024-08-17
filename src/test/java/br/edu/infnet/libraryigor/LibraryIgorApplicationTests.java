@@ -1,5 +1,6 @@
 package br.edu.infnet.libraryigor;
 
+import br.edu.infnet.libraryigor.config.LocalConfig;
 import br.edu.infnet.libraryigor.model.entities.Book;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -14,7 +15,7 @@ class LibraryIgorApplicationTests {
     @Test
     void loadBookEntity() {
         try {
-            LibraryIgorApplication main = new LibraryIgorApplication();
+            LocalConfig main = new LocalConfig();
             main.readBooks();
             Map<Integer, Book> entities = main.getBookMap();
 

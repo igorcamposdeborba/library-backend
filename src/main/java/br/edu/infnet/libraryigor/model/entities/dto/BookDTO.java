@@ -13,6 +13,7 @@ import jakarta.validation.constraints.NotBlank;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.Set;
 
 public class BookDTO implements Serializable {
@@ -23,6 +24,8 @@ public class BookDTO implements Serializable {
     private String author;
     private LocalDate yearPublication;
     private double price;
+    private Integer libraryId;
+//    private Library library;
 
     public BookDTO(Book book) {
         this.id = book.getId();
@@ -30,13 +33,17 @@ public class BookDTO implements Serializable {
         this.author = book.getAuthor();
         this.yearPublication = LocalDate.parse(String.valueOf(book.getYearPublication()).replaceAll("^\"|\"$","").trim());
         this.price = book.getPrice();
+        this.libraryId = book.getLibrary().getId();
+//        this.library = Objects.nonNull(book.getLibrary()) ? book.getLibrary() : new Library();
     }
-    public BookDTO(Integer id, String title, String author, String yearPublication, double price, Loan loan) {
+    public BookDTO(Integer id, String title, String author, String yearPublication, double price, Integer libraryId) {
         this.id = id;
         this.title = title;
         this.author = author;
         this.yearPublication = LocalDate.parse(yearPublication.replaceAll("^\"|\"$","").trim());
         this.price = price;
+        this.libraryId = libraryId;
+//        this.library = library;
 //        this.loan = loan;
     }
 
@@ -68,4 +75,10 @@ public class BookDTO implements Serializable {
         this.price = price;
     }
 
+    public Integer getLibraryId() {
+        return libraryId;
+    }
+//    public Library getLibrary() {
+//        return library;
+//    }
 }

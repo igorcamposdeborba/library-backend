@@ -2,12 +2,16 @@ package br.edu.infnet.libraryigor.model.services;
 
 import br.edu.infnet.libraryigor.Constants;
 import br.edu.infnet.libraryigor.model.entities.Book;
+import br.edu.infnet.libraryigor.model.entities.Library;
 import br.edu.infnet.libraryigor.model.entities.client.Users;
 import br.edu.infnet.libraryigor.model.entities.dto.BookDTO;
+import br.edu.infnet.libraryigor.model.entities.dto.LibraryDTO;
 import br.edu.infnet.libraryigor.model.entities.dto.UsersDTO;
 import br.edu.infnet.libraryigor.model.repositories.BookRepository;
+import br.edu.infnet.libraryigor.model.repositories.LibraryRepository;
 import br.edu.infnet.libraryigor.model.repositories.UserRepository;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -22,6 +26,8 @@ import java.util.stream.Collectors;
 public class BookService {
     @Autowired
     private BookRepository bookRepository; // injetar instancia do repository para buscar do banco de dados via JPA
+    @Autowired
+    private LibraryRepository libraryRepository;
 
     public List<BookDTO> findAll(){
         List<Book> bookList = bookRepository.findAll(Sort.by("title")); // buscar no banco de dados e ordenar por nome
@@ -41,16 +47,20 @@ public class BookService {
     }
 
     @Transactional
-    public BookDTO insert(BookDTO bookDTO) {
+    public BookDTO insert(@Valid BookDTO bookDTO) { // @Valid: validar objeto (annotations e atributos)
+
+        Library library = libraryRepository.findById(bookDTO.getLibraryId()).stream().findAny().get();
+
         // Mapear DTO para classe
         Book entity = new Book(bookDTO);
+        entity.setLibrary(library);
 
         entity = bookRepository.save(entity); // salvar no banco de dados
         return new BookDTO(entity); // retornar o que foi salvo no banco de dados
     }
 
     @Transactional
-    public List<BookDTO> insertAll(List<BookDTO> bookDTO) {
+    public List<BookDTO> insertAll(@Valid List<BookDTO> bookDTO) {
         // Mapear DTO para classe
         List<Book> entities = bookDTO.stream().map(book -> new Book(book)).collect(Collectors.toList());
 
