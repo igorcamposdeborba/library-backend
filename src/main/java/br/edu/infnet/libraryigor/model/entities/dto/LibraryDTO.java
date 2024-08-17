@@ -1,7 +1,9 @@
 package br.edu.infnet.libraryigor.model.entities.dto;
 
 
+import br.edu.infnet.libraryigor.Constants;
 import br.edu.infnet.libraryigor.model.entities.Book;
+import br.edu.infnet.libraryigor.model.entities.Library;
 import br.edu.infnet.libraryigor.model.entities.Loan;
 import br.edu.infnet.libraryigor.model.entities.client.Users;
 import jakarta.persistence.*;
@@ -10,15 +12,24 @@ import jakarta.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class LibraryDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Integer id;
-    private static String name;
-    private static String address;
-    private List<Book> books;
+    private String name;
+    private String address;
+    private List<Integer> booksIds;
     private List<Users> users;
+
+    public LibraryDTO(Library library) {
+        this.id = library.getId();
+        this.name = Constants.NAME;
+        this.address = Constants.ADDRESS;
+        this.booksIds = library.getBooks().stream().map(book -> book.getId()).collect(Collectors.toList());
+        this.users = library.getUsers();
+    }
 
     public Integer getId() {
         return id;
@@ -28,28 +39,28 @@ public class LibraryDTO implements Serializable {
         this.id = id;
     }
 
-    public static String getName() {
+    public String getName() {
         return name;
     }
 
-    public static void setName(String name) {
-        LibraryDTO.name = name;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public static String getAddress() {
+    public String getAddress() {
         return address;
     }
 
-    public static void setAddress(String address) {
-        LibraryDTO.address = address;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public List<Book> getBooks() {
-        return books;
+    public List<Integer> getBooksIds() {
+        return this.booksIds;
     }
 
     public void setBooks(List<Book> books) {
-        this.books = books;
+        this.booksIds.addAll(books.stream().map(book -> book.getId()).collect(Collectors.toList()));
     }
 
     public List<Users> getUsers() {

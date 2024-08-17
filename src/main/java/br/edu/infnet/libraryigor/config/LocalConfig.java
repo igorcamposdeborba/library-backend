@@ -225,11 +225,6 @@ public class LocalConfig {
                 Users user = userMap.get(userId);
                 Book book = bookMap.get(bookId);
 
-                if (user == null || book == null) {
-                    // Log an error or handle the case where user or book is not found
-                    continue;
-                }
-
                 LocalDate effectiveFrom = LocalDate.parse(fields[2]);
                 LocalDate effectiveTo = LocalDate.parse(fields[3]);
 

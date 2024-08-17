@@ -1,8 +1,9 @@
 package br.edu.infnet.libraryigor.model.entities;
 
 import br.edu.infnet.libraryigor.model.entities.client.Users;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -13,17 +14,18 @@ public class Loan implements Serializable { // Serializable para trafegar em red
 
     @EmbeddedId
     private LoanRecord loanId; // Chave composta como objeto
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @MapsId("userId") // Mapeia a chave primária composta
     @JoinColumn(name = "user_id", nullable = false) // name na tabela do banco de dados. E não permite nulo
     private Users users;
 
-    @OneToOne // muitos empréstimos (Loan) a um livro
+    @ManyToOne(fetch = FetchType.EAGER)
     @MapsId("bookId") // Mapeia a chave primária composta
     @JoinColumn(name = "book_id", nullable = false) // name na tabela do banco de dados. E não permite nulo
     private Book book;
 
-//    @NotBlank // nao permite vazio ou null
+    @Nonnull // nao permite null
     private LocalDate effectiveFrom;
     private LocalDate effectiveTo;
 
@@ -60,6 +62,10 @@ public class Loan implements Serializable { // Serializable para trafegar em red
     }
     public void setBook(Book book) {
         this.book = book;
+    }
+
+    public LoanRecord getLoanId() {
+        return loanId;
     }
 
     @Override

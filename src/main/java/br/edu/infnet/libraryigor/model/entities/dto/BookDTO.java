@@ -25,7 +25,6 @@ public class BookDTO implements Serializable {
     private LocalDate yearPublication;
     private double price;
     private Integer libraryId;
-//    private Library library;
 
     public BookDTO(Book book) {
         this.id = book.getId();
@@ -34,7 +33,6 @@ public class BookDTO implements Serializable {
         this.yearPublication = LocalDate.parse(String.valueOf(book.getYearPublication()).replaceAll("^\"|\"$","").trim());
         this.price = book.getPrice();
         this.libraryId = book.getLibrary().getId();
-//        this.library = Objects.nonNull(book.getLibrary()) ? book.getLibrary() : new Library();
     }
     public BookDTO(Integer id, String title, String author, String yearPublication, double price, Integer libraryId) {
         this.id = id;
@@ -43,8 +41,6 @@ public class BookDTO implements Serializable {
         this.yearPublication = LocalDate.parse(yearPublication.replaceAll("^\"|\"$","").trim());
         this.price = price;
         this.libraryId = libraryId;
-//        this.library = library;
-//        this.loan = loan;
     }
 
     public Integer getId() {
@@ -78,7 +74,4 @@ public class BookDTO implements Serializable {
     public Integer getLibraryId() {
         return libraryId;
     }
-//    public Library getLibrary() {
-//        return library;
-//    }
 }

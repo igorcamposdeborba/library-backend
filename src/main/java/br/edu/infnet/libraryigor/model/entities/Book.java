@@ -1,14 +1,10 @@
 package br.edu.infnet.libraryigor.model.entities;
 
 import br.edu.infnet.libraryigor.model.entities.dto.BookDTO;
-import br.edu.infnet.libraryigor.model.entities.dto.LibraryDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @Table(name = "book")
@@ -25,7 +21,7 @@ public class Book implements Serializable { // Serializable para trafegar em red
     private LocalDate yearPublication;
     private double price;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "library_id")
     private Library library;
 

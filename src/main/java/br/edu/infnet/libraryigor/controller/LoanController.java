@@ -1,8 +1,6 @@
 package br.edu.infnet.libraryigor.controller;
 
-import br.edu.infnet.libraryigor.model.entities.dto.BookDTO;
 import br.edu.infnet.libraryigor.model.entities.dto.LoanDTO;
-import br.edu.infnet.libraryigor.model.services.BookService;
 import br.edu.infnet.libraryigor.model.services.LoanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

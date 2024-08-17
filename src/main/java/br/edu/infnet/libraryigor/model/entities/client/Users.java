@@ -24,7 +24,7 @@ public abstract class Users implements Serializable { // Classe abstrata para qu
     private String email;
     private boolean active;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "library_id")
     private Library library;
 
