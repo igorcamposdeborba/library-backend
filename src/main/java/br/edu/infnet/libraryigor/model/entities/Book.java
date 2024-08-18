@@ -36,7 +36,7 @@ public class Book implements Serializable { // Serializable para trafegar em red
         this.price = price;
     }
     public Book(BookDTO bookDTO) { // converter DTO para entity
-        this.id = bookDTO.getId();
+//        this.id = bookDTO.getId();
         this.title = bookDTO.getTitle();
         this.author = bookDTO.getAuthor();
         this.yearPublication = LocalDate.parse(String.valueOf(bookDTO.getYearPublication()).replaceAll("^\"|\"$","").trim());

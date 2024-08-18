@@ -171,7 +171,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "[\r\n    {\r\n        \"title\": \"O Senhor dos Anéis\",\r\n        \"author\": \"J.R.R. Tolkien\",\r\n        \"yearPublication\": \"1954-07-29\",\r\n        \"price\": 4.00\r\n    },\r\n    {\r\n        \"title\": \"Administração de Marketing\",\r\n        \"author\": \"Philip Kotler\",\r\n        \"yearPublication\": \"2008-06-25\",\r\n        \"price\": 4.00\r\n    }\r\n]",
+					"raw": "[\r\n    {\r\n        \"title\": \"O Senhor dos Pasteis\",\r\n        \"author\": \"J.R.R. Tolkien\",\r\n        \"yearPublication\": \"1955-07-29\",\r\n        \"price\": 4.00,\r\n        \"libraryId\": 1\r\n    },\r\n    {\r\n        \"title\": \"Administração de Marketing\",\r\n        \"author\": \"Philip Kotler\",\r\n        \"yearPublication\": \"2008-06-25\",\r\n        \"price\": 4.00,\r\n        \"libraryId\": 1\r\n    }\r\n]",
 					"options": {
 						"raw": {
 							"language": "json"
