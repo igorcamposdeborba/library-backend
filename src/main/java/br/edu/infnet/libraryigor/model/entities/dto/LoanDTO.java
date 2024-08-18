@@ -4,12 +4,15 @@ package br.edu.infnet.libraryigor.model.entities.dto;
 import br.edu.infnet.libraryigor.model.entities.Loan;
 import br.edu.infnet.libraryigor.model.entities.LoanRecord;
 import br.edu.infnet.libraryigor.model.entities.client.Users;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 
 public class LoanDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    @Schema(description = "Database generate the Loan id compound") // Anotacao para Swagger
     private LoanRecord id; // id do empréstimo
     private String bookTitle;
     private Users users;

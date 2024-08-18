@@ -2,6 +2,7 @@ package br.edu.infnet.libraryigor.model.entities;
 
 import br.edu.infnet.libraryigor.Constants;
 import br.edu.infnet.libraryigor.model.entities.client.Users;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
@@ -19,6 +20,7 @@ public class Library implements Serializable { // Serializable para trafegar em 
     private String name;
     private String address;
 
+    @JsonManagedReference // lado que gerancia o relacionamento de duas vias. Evita recursao infinita
     @OneToMany(mappedBy = "library", cascade = CascadeType.ALL) // cacade: aplicar tambem para as classes filhas
     private List<Book> books;                           // mappedBy: quem gerencia a chave estrangeira é Library
 

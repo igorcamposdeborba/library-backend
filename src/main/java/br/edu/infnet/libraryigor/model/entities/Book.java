@@ -1,6 +1,7 @@
 package br.edu.infnet.libraryigor.model.entities;
 
 import br.edu.infnet.libraryigor.model.entities.dto.BookDTO;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import java.io.Serializable;
@@ -21,6 +22,7 @@ public class Book implements Serializable { // Serializable para trafegar em red
     private LocalDate yearPublication;
     private double price;
 
+    @JsonBackReference // lado gerenciado no relacionamento de duas vias. Evita recursao infinita
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "library_id")
     private Library library;

@@ -9,6 +9,11 @@ import br.edu.infnet.libraryigor.model.entities.client.Student;
 import br.edu.infnet.libraryigor.model.entities.client.Users;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.DiscriminatorColumn;
+import jakarta.persistence.DiscriminatorType;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import org.apache.commons.lang3.RegExUtils;
 
 import java.io.Serializable;
@@ -17,10 +22,11 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_NULL) // ignora atributos nulos
 public class UsersDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    @Schema(description = "Database generate the User id") // Anotacao para Swagger
     private Integer id;
     private String type;
     private String name;

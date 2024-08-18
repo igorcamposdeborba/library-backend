@@ -1,24 +1,13 @@
 package br.edu.infnet.libraryigor.model.entities.dto;
-
-
 import br.edu.infnet.libraryigor.model.entities.Book;
-import br.edu.infnet.libraryigor.model.entities.Library;
-import br.edu.infnet.libraryigor.model.entities.Loan;
-import br.edu.infnet.libraryigor.model.entities.LoanRecord;
-import br.edu.infnet.libraryigor.model.entities.client.Users;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.validation.constraints.NotBlank;
-
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Objects;
-import java.util.Set;
 
 public class BookDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    @Schema(description = "Database generate the Book id") // Anotacao para Swagger
     private Integer id;
     private String title;
     private String author;

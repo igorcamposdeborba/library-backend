@@ -6,6 +6,7 @@ import br.edu.infnet.libraryigor.model.entities.Book;
 import br.edu.infnet.libraryigor.model.entities.Library;
 import br.edu.infnet.libraryigor.model.entities.Loan;
 import br.edu.infnet.libraryigor.model.entities.client.Users;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 public class LibraryDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    @Schema(description = "Database generate the Library id") // Anotacao para Swagger
     private Integer id;
     private String name;
     private String address;

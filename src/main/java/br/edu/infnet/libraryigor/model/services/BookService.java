@@ -10,6 +10,7 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -43,6 +44,11 @@ public class BookService {
 
     @Transactional
     public BookDTO insert(@Valid BookDTO bookDTO) { // @Valid: validar objeto (annotations e atributos)
+
+        Optional<Book> book = bookRepository.findByTitle(bookDTO.getTitle());
+        if (book.isPresent()) {
+            throw new DataIntegrityViolationException("Já existe um livro cadastrado com esse título");
+        }
 
         Library library = libraryRepository.findById(bookDTO.getLibraryId()).stream().findAny().get();
 
