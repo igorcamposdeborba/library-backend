@@ -1,6 +1,7 @@
 package br.edu.infnet.libraryigor.model.entities;
 
 import br.edu.infnet.libraryigor.model.entities.client.Users;
+import br.edu.infnet.libraryigor.model.entities.dto.LoanDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
@@ -36,6 +37,14 @@ public class Loan implements Serializable { // Serializable para trafegar em red
         this.effectiveTo = effectiveTo;
 
         this.loanId = new LoanRecord(book, user);
+    }
+    public Loan(LoanDTO loan) {
+        this.users = loan.getUsers();
+        this.book = loan.getBook();
+        this.effectiveFrom = loan.getEffectiveFrom();
+        this.effectiveTo = loan.getEffectiveTo();
+
+        this.loanId = new LoanRecord(book, users);
     }
     public Loan() {}
 
