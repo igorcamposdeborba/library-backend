@@ -24,6 +24,51 @@
 			"response": []
 		},
 		{
+			"name": "USER: findById",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/user/1",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"user",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "USERS: findByEmail",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"igor@hotmail.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/user/email",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"user",
+						"email"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "LOAN: findAll",
 			"request": {
 				"method": "GET",
@@ -99,7 +144,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"title\": \"O Senhor dos Anéis\",\r\n    \"author\": \"J.R.R. Tolkien\",\r\n    \"yearPublication\": \"1954-07-29\",\r\n    \"price\": 4.00,\r\n    \"libraryId\": 1\r\n}",
+					"raw": "{\r\n    \"title\": \"Código Limpo\",\r\n    \"author\": \"Robert Cecil Martin\",\r\n    \"yearPublication\": \"2020-07-29\",\r\n    \"price\": 4.00,\r\n    \"libraryId\": 1\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
