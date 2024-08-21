@@ -271,6 +271,33 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "BOOK: update single book",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"Arquitetura Limpa\",\r\n    \"author\": \"Luigi Cecil Martin\",\r\n    \"yearPublication\": \"2019-07-29\",\r\n    \"price\": 4.00,\r\n    \"libraryId\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/book/3",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"book",
+						"3"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
