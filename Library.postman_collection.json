@@ -194,6 +194,33 @@
 			"response": []
 		},
 		{
+			"name": "LOAN: deliver book",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"bookId\": 1,\r\n    \"userId\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/loan/find",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"loan",
+						"find"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "LOAN: create single loan",
 			"request": {
 				"method": "POST",
